@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Add to installed apps -> tweets directory
+    # created with  python manage.py startapp tweets
+    'tweets',
 ]
 
 MIDDLEWARE = [
