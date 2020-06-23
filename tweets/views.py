@@ -1,3 +1,4 @@
+import random
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render
 # importing Tweet from one dir above - best practice
@@ -12,7 +13,7 @@ def home_view(request, *args, **kwargs):
 def tweet_list_view(request, *args, **kwargs):
   # RestAPI view
   qs = Tweet.objects.all()
-  tweets_list = [{"id": x.id, "content": x.content} for x in qs]
+  tweets_list = [{"id": x.id, "content": x.content, "likes": random.randint(0, 123) } for x in qs]
   data = {
     "isUser": False,
     "response": tweets_list
