@@ -7,18 +7,46 @@ Amazing
 {% block content %}
 Welcome to Tweetme
 
+<div id='tweets'>
+  Loading...
+</div>
+
 <script>
+  const tweetsElement = document.getElementById("tweets") // $("tweets")jQuery
+  // setting new HTML in that element
+  //tweetsElement.innerHTML = 'Loading...'
+  //var el1 = "<h1> Hi There 1<h1>"
+  //var el2 = "<h1> Hi There 2<h1>"
+  //var el3 = "<h1> Hi There 3<h1>"
+  //tweetsElement.innerHTML = el1 + el2 + el3
+
   const xhr = new XMLHttpRequest() // xhr = SomeClass() -> Python 
   const method = 'GET'
   const url = "/tweets"
   const responseType = "json"
 
+  function formatTweetElement(tweet){
+    var formattedTweet = "<div class='mb-4 tweet' id='tweet-" + tweet.id + "'><p>"
+        + tweet.content + "</p></div>"
+    return formattedTweet
+  }
+
   xhr.responseType = responseType
   xhr.open(method, url)
+
   xhr.onload = function() {
     const serverResponse = xhr.response
-    var listedItems = serverResponse.response
-    console.log(listedItems)
+    const  listedItems = serverResponse.response
+    var finalTweetStr = ""
+    var i;
+
+    for (i=0; i<listedItems.length; i++){
+      var tweetObj = listedItems[i]
+      var currentItem = formatTweetElement(tweetObj)
+      finalTweetStr += currentItem
+    }
+    tweetsElement.innerHTML = finalTweetStr
+
   }
   xhr.send()
 
