@@ -5,7 +5,8 @@ from .models import Tweet
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
-  return HttpResponse("<h1>HelloWorld</h1>")
+  # Renderign template
+  return render(request, "pages/home.html", context={}, status=200)
 
 # Dynamic url routing
 def tweet_detail_view(request, tweet_id, *args, **kwargs):
