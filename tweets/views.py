@@ -20,6 +20,7 @@ def home_view(request, *args, **kwargs):
 
 @csrf_protect
 def tweet_create_view(request, *args, **kwargs):
+  #print('ajax:', request.is_ajax()) False
   # TweetForm class can be initialized with data or not (None)
   form = TweetForm(request.POST or None)
   #print('Post data is: ', request.POST)
