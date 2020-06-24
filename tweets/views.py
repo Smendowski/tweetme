@@ -34,10 +34,12 @@ def tweet_create_view(request, *args, **kwargs):
     if request.is_ajax():
       # created items status
       return JsonResponse(obj.serialize(), status=201)
-
     if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
       return redirect(next_url)
     form = TweetForm()
+  if form.error:
+    if request.is_ajax():
+      return JsonResponse(form.error, status=400)
   return render(request, 'components/form.html', context={"form": form})
 
 

@@ -58,7 +58,16 @@ Amazing
         tweetsContainerElement.innerHTML = newTweetElement + ogHtml
         // reset to have an empty field after adding a new Tweet
         myForm.reset()
+      } else if (xhr.status === 400){
+        const errorJson = xhr.response
+        console.log(erorrJson)
+      } else if (xhr.status === 500){
+        // Server error
+        alert("There was a sever error. Please try again.")
       }
+    } 
+    xhr.onerror = function(){
+      alert("An error occured. Please try again later")
     }
     xhr.send(myFormData)
   }
