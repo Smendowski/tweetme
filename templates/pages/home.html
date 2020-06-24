@@ -21,7 +21,7 @@ Amazing
       submiting a form
       next_url is is in POSY as next, url value '/'-->
       <input type='hidden' value='/' name='next' />
-      <textarea class='form-control' name='content' placeholder='Your tweet...'></textarea>
+      <textarea required='required' class='form-control' name='content' placeholder='Your tweet...'></textarea>
       <button type='submit' class='btn btn-primary'>Tweet</button>
       <!-- Button przekierowuje nas do endpointu, przekazując treść, endpoint umożliwia zapisanie treści do bazy danych.  Połączenie wystylizowanej form z logiką-->
     </form>
@@ -56,6 +56,8 @@ Amazing
         const newTweetElement = formatTweetElement(newTweetJson)
         const ogHtml = tweetsContainerElement.innerHTML
         tweetsContainerElement.innerHTML = newTweetElement + ogHtml
+        // reset to have an empty field after adding a new Tweet
+        myForm.reset()
       }
     }
     xhr.send(myFormData)
