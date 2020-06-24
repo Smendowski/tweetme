@@ -1,12 +1,17 @@
 import random
+from django.conf import settings
 from django.http import HttpResponse, Http404, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 # importing Tweet from one dir above - best practice
+from django.utils.http import is_safe_url
+
 from .forms import TweetForm
 from .models import Tweet
 
 # Without it... csrf_token error or mismatch
 from django.views.decorators.csrf import csrf_protect
+
+ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
@@ -25,7 +30,7 @@ def tweet_create_view(request, *args, **kwargs):
     # do other form related logic
     # save to the database
     obj.save()
-    if next_url != None:
+    if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
       return redirect(next_url)
     form = TweetForm()
   return render(request, 'components/form.html', context={"form": form})

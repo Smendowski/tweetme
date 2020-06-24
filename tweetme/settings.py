@@ -26,7 +26,8 @@ SECRET_KEY = '2s)pr)a^wv9p#b(5xr-fsol!^2$7+n*a$urluhl8acq-#prr(3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Safty redirection in Django -> define  safaty domains here.
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
