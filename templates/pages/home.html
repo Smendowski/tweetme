@@ -18,7 +18,8 @@ Amazing
     <form class='form' method='POST' action='/create-tweet'>
       {% csrf_token %}
       <!-- no mather what, redirect to the home page after
-      submiting a form-->
+      submiting a form
+      next_url is is in POSY as next, url value '/'-->
       <input type='hidden' value='/' name='next' />
       <textarea class='form-control' name='content' placeholder='Your tweet...'></textarea>
       <button type='submit' class='btn btn-primary'>Tweet</button>
