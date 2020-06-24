@@ -15,7 +15,7 @@ Amazing
 <div class='row mb-3'>
   <div class='col-md-4 mx-auto col-10'>
     <!--action -> define the enpoint, destination of sending data-->
-    <form class='form' method='POST' action='/create-tweet'>
+    <form class='form' id='tweet-create-form' method='POST' action='/create-tweet'>
       {% csrf_token %}
       <!-- no mather what, redirect to the home page after
       submiting a form
@@ -33,6 +33,33 @@ Amazing
 </div>
 
 <script>
+  // event passed by default to event listener
+  function handleTweetCreateFormDidSubmit(event){
+    // Handle event withoud page being reloaded
+    event.preventDefault()
+    const myForm = event.target
+    const myFormData = new FormData(myForm)
+    //for (var myItem of myFormData.entries()){
+    //  console.log(myItem)
+    //}
+    const endpoint_url = myForm.getAttribute("action")
+    const method = myForm.getAttribute("method")
+    const xhr = new XMLHttpRequest()
+    xhr.open(method, endpoint_url)
+    xhr.onload = function(){
+      const serverResponse = xhr.response
+      console.log(serverResponse)
+      const tweetsEl = document.getElementById("tweets")
+      loadTweets(tweetsEl)
+    }
+    xhr.send(myFormData)
+  }
+
+  const tweetCreateFormElement = document.getElementById("tweet-create-form")
+
+  tweetCreateFormElement.addEventListener("submit", handleTweetCreateFormDidSubmit)
+
+
   const tweetsEl = document.getElementById("tweets") // $("tweets")jQuery
   // setting new HTML in that element
   //tweetsElement.innerHTML = 'Loading...'
