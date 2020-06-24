@@ -5,12 +5,15 @@ from django.shortcuts import render
 from .forms import TweetForm
 from .models import Tweet
 
+# Without it... csrf_token error or mismatch
+from django.views.decorators.csrf import csrf_protect
+
 # Create your views here.
 def home_view(request, *args, **kwargs):
   # Renderign template
   return render(request, "pages/home.html", context={}, status=200)
 
-
+@csrf_protect
 def tweet_create_view(request, *args, **kwargs):
   # TweetForm class can be initialized with data or not (None)
   form = TweetForm(request.POST or None)
