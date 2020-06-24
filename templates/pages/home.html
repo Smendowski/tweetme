@@ -45,9 +45,9 @@ Amazing
     const endpoint_url = myForm.getAttribute("action")
     const method = myForm.getAttribute("method")
     const xhr = new XMLHttpRequest()
+    xhr.open(method, endpoint_url)
     xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-    xhr.open(method, endpoint_url)
     xhr.onload = function(){
       const serverResponse = xhr.response
       console.log(serverResponse)

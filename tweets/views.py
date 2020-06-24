@@ -31,6 +31,10 @@ def tweet_create_view(request, *args, **kwargs):
     # do other form related logic
     # save to the database
     obj.save()
+    if request.is_ajax():
+      # created items status
+      return JsonResponse({}, status=201)
+
     if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
       return redirect(next_url)
     form = TweetForm()
