@@ -16,8 +16,8 @@ class Tweet(models.Model):
   image = models.FileField(upload_to='images/', blank=True, null=True)
 
 
-  def __str__(self):
-    return self.content
+  #def __str__(self):
+  #  return self.content
 
   # Reordering tweets to see the oldest at the bottom
   class Meta:
