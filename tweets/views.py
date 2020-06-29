@@ -7,6 +7,7 @@ from django.utils.http import is_safe_url
 
 from .forms import TweetForm
 from .models import Tweet
+from .serializers import TweetSerializer
 
 # Without it... csrf_token error or mismatch
 from django.views.decorators.csrf import csrf_protect
@@ -20,6 +21,15 @@ def home_view(request, *args, **kwargs):
 
 @csrf_protect
 def tweet_create_view(request, *args, **kwargs):
+  data = request.POST or None
+  serializer = TweetSerializer(data)
+  if serializer.is_valid():
+    serializer.save()
+  return JsonResponse({}, status=0)
+
+
+@csrf_protect
+def tweet_create_view_pure_django(request, *args, **kwargs):
   user = request.user
   if not request.user.is_authenticated:
     user = None
