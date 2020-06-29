@@ -40,8 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 3rd party
+
     # Add to installed apps -> tweets directory
     # created with  python manage.py startapp tweets
+    'rest_framework',
+    
+    # INTERNAl
     'tweets',
 ]
 
