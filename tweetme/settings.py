@@ -28,6 +28,7 @@ DEBUG = True
 
 # Safty redirection in Django -> define  safaty domains here.
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+LOGIN_URL = "/login"
 
 
 # Application definition

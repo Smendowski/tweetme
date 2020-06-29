@@ -20,6 +20,12 @@ def home_view(request, *args, **kwargs):
 
 @csrf_protect
 def tweet_create_view(request, *args, **kwargs):
+  user = request.user
+  if not request.user.is_authenticated:
+    user = None
+    if request.is_ajax():
+      return JsonResponse({}, status=401)
+    return redirect(settings.LOGIN_URL)
   #print('ajax:', request.is_ajax()) False
   # TweetForm class can be initialized with data or not (None)
   form = TweetForm(request.POST or None)
@@ -28,6 +34,8 @@ def tweet_create_view(request, *args, **kwargs):
   print('next url: ', next_url)
   if form.is_valid():
     obj = form.save(commit=False)
+    # None for annonymous user
+    obj.user = user
     # do other form related logic
     # save to the database
     obj.save()
