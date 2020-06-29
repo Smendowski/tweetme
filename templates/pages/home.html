@@ -91,6 +91,9 @@ Amazing
       } else if (xhr.status === 500){
         // Server error
         alert("There was a sever error. Please try again.")
+      } else if (xhr.status === 401){
+        alert("You must login to add a Tweet!")
+        window.location.href = "/login"
       }
     } 
     xhr.onerror = function(){
