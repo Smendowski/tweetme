@@ -4,7 +4,8 @@ from django.http import HttpResponse, Http404, JsonResponse, HttpResponseRedirec
 from django.shortcuts import render, redirect
 # importing Tweet from one dir above - best practice
 from django.utils.http import is_safe_url
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from .forms import TweetForm
 from .models import Tweet
 from .serializers import TweetSerializer
@@ -19,13 +20,31 @@ def home_view(request, *args, **kwargs):
   # Renderign template
   return render(request, "pages/home.html", context={}, status=200)
 
-@csrf_protect
+
+# pass methods we want to support
+@api_view(['POST']) # http method the client === POST
 def tweet_create_view(request, *args, **kwargs):
   data = request.POST or None
-  serializer = TweetSerializer(data)
-  if serializer.is_valid():
-    serializer.save()
-  return JsonResponse({}, status=0)
+  serializer = TweetSerializer(data = request.POST)
+  if serializer.is_valid(raise_exception=True):
+    serializer.save(user = request.user)
+    return Response(serializer.data, status=201)
+  return Response({}, status=400)
+
+@api_view(['GET'])
+def tweet_list_view(request, *args, **kwargs):
+  qs = Tweet.objects.all()
+  serializer = TweetSerializer(qs, many=True)
+  return Response(serializer.data)
+
+@api_view(['GET'])
+def tweet_detail_view(request, tweet_id, *args, **kwargs):
+  qs = Tweet.objects.filter(id=tweet_id)
+  if not qs.exists():
+    return Response({}, status=404)
+  obj = qs.first()
+  serializer = TweetSerializer(obj)
+  return Response(serializer.data)
 
 
 @csrf_protect
@@ -61,7 +80,7 @@ def tweet_create_view_pure_django(request, *args, **kwargs):
   return render(request, 'components/form.html', context={"form": form})
 
 
-def tweet_list_view(request, *args, **kwargs):
+def tweet_list_view_pure_django(request, *args, **kwargs):
   # RestAPI view
   qs = Tweet.objects.all()
   tweets_list = [x.serialize() for x in qs]
@@ -73,7 +92,7 @@ def tweet_list_view(request, *args, **kwargs):
 
 
 # Dynamic url routing
-def tweet_detail_view(request, tweet_id, *args, **kwargs):
+def tweet_detail_view_pure_django(request, tweet_id, *args, **kwargs):
   # We can retrieve a tweet only if it exsists in db. Otherwise error has occured with server
   # RestAPI view - return json data
   # consume by JS, Swift itd..
