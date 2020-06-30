@@ -88,6 +88,9 @@ Amazing
         }
         else if (xhr.status === 500) {
             alert("There was a server error, please try again.")
+        } else if (xhr.status == 403) {
+            alert("You must login!")
+            window.location.href = "/login"
         }
         
     }
