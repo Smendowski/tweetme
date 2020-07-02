@@ -34,9 +34,29 @@ Amazing
 </div>
 
 <script>
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+
+  var csrftoken = getCookie('csrftoken');
+
+
+
   function handleTweetFormError(msg, display){
     var myErrorDiv = document.getElementById("tweet-create-form-error")
-    if (display === True){
+    if (display === true){
       // show error
       myErrorDiv.setAttribute("class", "d-block alert alert-danger")
       myErrorDiv.innerText = msg
@@ -68,6 +88,7 @@ Amazing
             const ogHtml = tweetsContainerElement.innerHTML
             tweetsContainerElement.innerHTML = newTweetElement + ogHtml
             myForm.reset()
+            loadTweets(tweetsContainerElement)
         } else if (xhr.status === 400) {
             const errorJson = xhr.response
             const contentError = errorJson.content
@@ -145,12 +166,15 @@ Amazing
       action: "like"
     })
     const xhr = new XMLHttpRequest()
+    const csrftoken = getCookie('csrftoken');
     xhr.open(method, url)
     xhr.setRequestHeader("Content-Type", "application/json")
     xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+    xhr.setRequestHeader("X-CSRFToken", csrftoken)
     xhr.onload = function() {
-      console.log(xhr.status, xhr.response)
+      // Reload Tweets after liking
+      loadTweets(tweetsContainerElement)
     }
     xhr.send(data)
     return 
